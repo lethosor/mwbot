@@ -21,16 +21,10 @@ class Task(object):
     def _get_resources(self, *args):
         pass
 
-    def arguments(self, arg):
-        """ Set up recognized command-line arguments
-
-        arg: A bound argparse.ArgumentParser.add_argument method
-        """
-        pass
-
     def main(self):
         parser = mwbot.cli.new_parser(require_user=True)
-        self.arguments(parser.add_argument)
+        for arg in getattr(self, '_arguments', []):
+            arg.bind(parser)
         self.args = args = parser.parse_args()
         creds = mwbot.cred.UserCreds(args.user)
         cli.debug('Logging in as %s:%s', creds.site_id, creds.username)

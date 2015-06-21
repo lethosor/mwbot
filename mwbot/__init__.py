@@ -15,5 +15,4 @@ import mwbot.bot
 import mwbot.cli
 import mwbot.cred
 import mwbot.run
-
-main = mwbot.run.main
+import mwbot.util

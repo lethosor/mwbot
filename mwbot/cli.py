@@ -6,7 +6,8 @@ try:
 except ImportError:
     pass
 
-import mwbot
+import mwbot.cred
+import mwbot.util
 
 class AbortInput(KeyboardInterrupt): pass
 
@@ -65,7 +66,7 @@ def log(fmt, *args):
 if DEBUG:
     debug = log
 else:
-    debug = lambda *_, **__: None
+    debug = mwbot.util.null_func
 
 def new_parser(**kwargs):
     parser = argparse.ArgumentParser()
@@ -77,3 +78,9 @@ def new_parser(**kwargs):
         parser.add_argument('--debug', help='Enable debugging output',
             required=False, action='store_true')
     return parser
+
+class ArgWrapper(object):
+    def __init__(self, *args, **kwargs):
+        self.args, self.kwargs = args, kwargs
+    def bind(self, parser):
+        parser.add_argument(*self.args, **self.kwargs)
